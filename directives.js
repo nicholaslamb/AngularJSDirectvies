@@ -1,4 +1,3 @@
-
 // set up directive for chosen dropdowns http://harvesthq.github.io/chosen/
 app.directive('chosen', function () {
     var linker = function (scope, element, attr) {
@@ -79,3 +78,30 @@ app.directive('loadingWidget', ['_START_REQUEST_', '_END_REQUEST_', function (_S
         }
     };
 } ]);
+
+
+// <notification data-ng-model="message"></notification>
+app.directive('notification', function ($timeout) {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            ngModel: '='
+        },
+        template: '<span class="notify ui-state-highlight">{{ ngModel }}</span>',
+        link: function (scope, element, attr) {
+            scope.$watch('ngModel', function (message) {
+                if (message == undefined) {
+                    element.hide();
+                    return;
+                }
+                
+                element.fadeIn();
+                $timeout(function () {
+                    element.fadeOut();
+                    console.log("notify");
+                }, 3000);
+            });
+        }
+    };
+});
